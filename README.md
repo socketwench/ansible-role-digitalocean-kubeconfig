@@ -1,11 +1,13 @@
-# Ansible Role: digitalocean kubeconfig
+# Ansible Role: digitalocean_kubeconfig
 
 Gets the kubeconfig for a DigitalOcean Kubernetes cluster.
 
+When working with DigitalOcean Kubernetes in automation, you need a method to dynamically get the kubeconfig.yaml. This file is periodically re-rolled by DigitalOcean as a security measure. This role uses the DigitalOcean API to get the kubeconfig dynamically, allowing you to provision to clusters with a fresh set of credientials every time.
+
 ## Requirements
 
-* You must have a Digital Ocean API key.
-* The Digital Ocean API must be accessible.
+* You must have a DigitalOcean API key.
+* The DigitalOcean API must be accessible.
 
 ## Role Variables
 
@@ -55,7 +57,7 @@ A straightforward use would be:
              kubeconfig: "/path/to/save/kubeconfig.yaml"
              src: "/path/to/my/k8s_definitions.yml"
 
-Sometimes you want to write the kubeconfig to a temporary file or directory. In that case, you can leverage include_role or import_role in Ansible 2.x:
+Sometimes you want to write the kubeconfig to a temporary file or directory. In that case, you can leverage include_role or import_role in Ansible 2.x, providing the role vars within the import task:
 
     ---
     - hosts: cluster
