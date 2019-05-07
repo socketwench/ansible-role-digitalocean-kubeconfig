@@ -1,0 +1,28 @@
+---
+- name: Get a list of clusters
+  uri:
+    url: "https://api.digitalocean.com/v2/kubernetes/clusters"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ digitalocean_api_token }}"
+  register: _cluster_list
+- name: Get the cluster ID given the cluster name
+  set_fact:
+    _cluster_id: "{{ _cluster_list.json | json_query(_cluster_query) | first }}"
+  vars:
+    _cluster_query: "kubernetes_clusters[?name=='{{ digitalocean_kubeconfig.cluster }}'].id"
+- name: Get the kubeconfig
+  uri:
+    url: "https://api.digitalocean.com/v2/kubernetes/clusters/{{ _cluster_id | string }}/kubeconfig"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ digitalocean_api_token }}"
+    return_content: yes
+    status_code:
+      - 200
+  register: _cluster_config
+- name: Write the kubeconfig file
+  copy:
+    content: "{{ _cluster_config.content }}"
+    dest: "{{ digitalocean_kubeconfig.kubeconfig }}"
+    mode: "u=rwx,g=,o="

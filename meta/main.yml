@@ -1,0 +1,22 @@
+galaxy_info:
+  role_name: digitalocean_kubeconfig
+  author: socketwench
+  description: Gets the kubeconfig file for clusters on DigitalOcean
+  company: TEN7
+  license: GPLv3
+  min_ansible_version: 2.5
+  platforms:
+    - name: GenericLinux
+      versions:
+        - all
+    - name: Debian
+      versions:
+        - all
+    - name: Ubuntu
+      versions:
+        - all
+  galaxy_tags:
+    - digitalocean
+    - cloud
+    - cli
+dependencies: []
